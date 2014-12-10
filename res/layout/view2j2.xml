@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:id="@+id/table1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="12dp"
+                android:text="电机1旋转状态"
+                android:textSize="20dip"
+                android:textStyle="bold" >
+            </TextView>
+
+            <Switch
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingRight="60dp"
+                android:paddingTop="12dp"
+                android:textOff="正转"
+                android:textOn="反转"
+                android:textSize="20dip"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dip"
+            android:background="#000000" />
+        
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="12dp"
+                android:text="电机1开关状态"
+                android:textSize="20dip"
+                android:textStyle="bold" >
+            </TextView>
+
+            <Switch
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingRight="60dp"
+                android:paddingTop="12dp"
+                android:textOff="通电"
+                android:textOn="断电"
+                android:textSize="20dip"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dip"
+            android:background="#000000" />
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="12dp"
+                android:text="电机2旋转状态"
+                android:textSize="20dip"
+                android:textStyle="bold" >
+            </TextView>
+
+            <Switch
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingRight="60dp"
+                android:paddingTop="12dp"
+                android:textOff="正转"
+                android:textOn="反转"
+                android:textSize="20dip"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dip"
+            android:background="#000000" />
+
+          <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="12dp"
+                android:text="电机2开关状态"
+                android:textSize="20dip"
+                android:textStyle="bold" >
+            </TextView>
+
+            <Switch
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingRight="60dp"
+                android:paddingTop="12dp"
+                android:textOff="通电"
+                android:textOn="断电"
+                android:textSize="20dip"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dip"
+            android:background="#000000" />
+        
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="12dp"
+                android:text="i2c状态"
+                android:textSize="20dip"
+                android:textStyle="bold" >
+            </TextView>
+
+            <Switch
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingRight="60dp"
+                android:paddingTop="12dp"
+                android:textOff="打开"
+                android:textOn="关闭"
+                android:textSize="20dip"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dip"
+            android:background="#000000" />
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="12dp"
+                android:text="红外状态"
+                android:textSize="20dip"
+                android:textStyle="bold" >
+            </TextView>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="12dp"
+                android:text="远离"
+                android:textSize="20dip"
+                android:textStyle="bold" >
+            </TextView>
+        </TableRow>
+
+        <View
+            android:layout_height="1dip"
+            android:background="#000000" />
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="12dp"
+                android:text="按键状态"
+                android:textSize="20dip"
+                android:textStyle="bold" >
+            </TextView>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingBottom="12dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="12dp"
+                android:text="导通"
+                android:textSize="20dip"
+                android:textStyle="bold" >
+            </TextView>
+        </TableRow>
+
+        <View
+            android:layout_height="1dip"
+            android:background="#000000" />
+    </TableLayout>
+
+</LinearLayout>

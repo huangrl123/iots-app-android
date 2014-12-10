@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="app_main_switch"
+        android:title="@string/app_name" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:dependency="app_main_switch"
+        android:key="learn_switch"
+        android:title="开关状态" />
+
+</PreferenceScreen>
