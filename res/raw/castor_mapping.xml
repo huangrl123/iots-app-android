@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+ "http://castor.org/mapping.dtd">
+<mapping>
+
+    <!-- 感知端列表响应 -->
+    <class
+        name="com.dahuangit.iots.app.android.dto.response.PerceptionInfo"
+        auto-complete="true" />
+    <class
+        name="com.dahuangit.iots.app.android.dto.response.GetPerceptionListResponse"
+        auto-complete="true" >
+        <map-to xml="response" />
+
+        <field
+            name="success"
+            type="boolean" />
+        <field name="msg" />
+        <field
+            name="perceptionDtos"
+            collection="arraylist"
+            type="com.dahuangit.iots.app.android.dto.response.PerceptionInfo" >
+            <bind-xml name="perception-info" />
+        </field>
+    </class>
+    <!-- 2+2感知端远程查询响应 -->
+    <class
+        name="com.dahuangit.iots.app.android.dto.response.RemoteQuery2j2PerceptionResponse"
+        auto-complete="true" >
+        <map-to xml="response" />
+
+        <field
+            name="success"
+            type="boolean" />
+        <field name="msg" />
+    </class>
+    <!-- 感知端运行日志列表响应 -->
+    <class
+        name="com.dahuangit.iots.app.android.dto.response.PerceptionRuntimeLogInfo"
+        auto-complete="true" />
+    <class name="com.dahuangit.iots.app.android.dto.response.PerceptionRuntimeLogDto" >
+        <field name="groupTag" />
+        <field
+            name="logInfos"
+            collection="arraylist"
+            type="com.dahuangit.iots.app.android.dto.response.PerceptionRuntimeLogInfo" >
+            <bind-xml name="perception-runtime-log-info" />
+        </field>
+    </class>
+    <class name="com.dahuangit.iots.app.android.dto.response.GetPerceptionRuntimeLogListResponse" >
+        <map-to xml="response" />
+
+        <field
+            name="success"
+            type="boolean" />
+        <field name="msg" />
+        <field
+            name="logDtos"
+            collection="arraylist"
+            type="com.dahuangit.iots.app.android.dto.response.PerceptionRuntimeLogDto" >
+            <bind-xml name="perception-runtime-log-dto" />
+        </field>
+    </class>
+
+</mapping>
