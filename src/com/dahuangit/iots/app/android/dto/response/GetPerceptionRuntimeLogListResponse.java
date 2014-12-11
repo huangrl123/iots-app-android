@@ -21,5 +21,4 @@ public class GetPerceptionRuntimeLogListResponse extends Response {
 	public void setLogDtos(List<PerceptionRuntimeLogDto> logDtos) {
 		this.logDtos = logDtos;
 	}
-
 }

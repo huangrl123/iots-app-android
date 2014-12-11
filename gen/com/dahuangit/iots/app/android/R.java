@@ -38,26 +38,26 @@ public final class R {
     }
     public static final class id {
         public static final int ItemImage=0x7f0b0011;
-        public static final int ItemInImage=0x7f0b0015;
+        public static final int ItemInImage=0x7f0b0016;
         public static final int ItemSign=0x7f0b0014;
         public static final int ItemText=0x7f0b0013;
         public static final int ItemTitle=0x7f0b0012;
-        public static final int LinearLayout01=0x7f0b0019;
-        public static final int ListView01=0x7f0b001a;
+        public static final int LinearLayout01=0x7f0b001a;
+        public static final int ListView01=0x7f0b001b;
         public static final int RelativeLayout01=0x7f0b0010;
-        public static final int action_forgot_password=0x7f0b0027;
-        public static final int backImg=0x7f0b0021;
+        public static final int action_forgot_password=0x7f0b0028;
+        public static final int backImg=0x7f0b0022;
         public static final int center_frame=0x7f0b0007;
         public static final int email=0x7f0b0003;
         public static final int exitSysTextView=0x7f0b000e;
-        public static final int gridview_imageview=0x7f0b0016;
-        public static final int gridview_textview=0x7f0b0017;
+        public static final int gridview_imageview=0x7f0b0017;
+        public static final int gridview_textview=0x7f0b0018;
         public static final int group_list_item_text=0x7f0b0008;
-        public static final int head_layout=0x7f0b0024;
+        public static final int head_layout=0x7f0b0025;
         public static final int head_view=0x7f0b000a;
         public static final int left_frame=0x7f0b000f;
-        public static final int line=0x7f0b001e;
-        public static final int listView=0x7f0b001f;
+        public static final int line=0x7f0b001f;
+        public static final int listView=0x7f0b0020;
         public static final int login=0x7f0b0005;
         public static final int loginStatusLinearLayout=0x7f0b0000;
         public static final int login_form=0x7f0b0002;
@@ -66,17 +66,18 @@ public final class R {
         public static final int my_answer_textview=0x7f0b000d;
         public static final int my_question_textview=0x7f0b000c;
         public static final int name_textview=0x7f0b000b;
-        public static final int pager=0x7f0b0026;
+        public static final int pager=0x7f0b0027;
         public static final int password=0x7f0b0004;
-        public static final int perceptionRuntimeLogList=0x7f0b001c;
-        public static final int right_frame=0x7f0b0020;
-        public static final int showLeft=0x7f0b0025;
+        public static final int perceptionId=0x7f0b0015;
+        public static final int perceptionRuntimeLogList=0x7f0b001d;
+        public static final int right_frame=0x7f0b0021;
+        public static final int showLeft=0x7f0b0026;
         public static final int sign_in_button=0x7f0b0006;
-        public static final int slidingMenu=0x7f0b0018;
-        public static final int table1=0x7f0b0022;
-        public static final int textView1=0x7f0b001b;
-        public static final int title=0x7f0b001d;
-        public static final int video=0x7f0b0023;
+        public static final int slidingMenu=0x7f0b0019;
+        public static final int table1=0x7f0b0023;
+        public static final int textView1=0x7f0b001c;
+        public static final int title=0x7f0b001e;
+        public static final int video=0x7f0b0024;
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;

@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 
 import org.apache.http.protocol.HTTP;
 
+import android.content.ContentValues;
 import android.content.Context;
-import android.database.SQLException;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -64,6 +64,18 @@ public class BaseDao extends SQLiteOpenHelper {
 			} catch (IOException e) {
 			}
 		}
+	}
+
+	public void insert(String table, ContentValues values) {
+		this.getWritableDatabase().insert(table, null, values);
+	}
+
+	public Cursor query(String sql, String[] selectionArgs) {
+		return this.getReadableDatabase().rawQuery(sql, selectionArgs);
+	}
+
+	public Cursor query(String sql) {
+		return this.getReadableDatabase().rawQuery(sql, null);
 	}
 
 	@Override

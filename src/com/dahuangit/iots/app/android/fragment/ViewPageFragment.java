@@ -44,7 +44,7 @@ public class ViewPageFragment extends Fragment {
 		View mView = inflater.inflate(R.layout.view_pager, null);
 		showLeft = (Button) mView.findViewById(R.id.showLeft);
 		mPager = (ViewPager) mView.findViewById(R.id.pager);
-		PageFragment1 page1 = new PageFragment1();
+		PerceptionListFragement page1 = new PerceptionListFragement();
 		pagerItemList.add(page1);
 		mAdapter = new MyAdapter(getFragmentManager());
 		mPager.setAdapter(mAdapter);

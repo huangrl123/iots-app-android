@@ -11,11 +11,14 @@ public class PerceptionInfo {
 	/** 类型id */
 	private Integer perceptionTypeId = null;
 
+	/** 感知端地址 */
+	private String perceptionAddr = null;
+
 	/** 感知端类型名称 */
-	private Integer perceptionTypeName = null;
+	private String perceptionTypeName = null;
 
 	/** 感知端id */
-	private String perceptionId = null;
+	private Integer perceptionId = null;
 
 	/** 感知端名称 */
 	private String perceptionName = null;
@@ -37,19 +40,19 @@ public class PerceptionInfo {
 		this.perceptionTypeId = perceptionTypeId;
 	}
 
-	public Integer getPerceptionTypeName() {
+	public String getPerceptionTypeName() {
 		return perceptionTypeName;
 	}
 
-	public void setPerceptionTypeName(Integer perceptionTypeName) {
+	public void setPerceptionTypeName(String perceptionTypeName) {
 		this.perceptionTypeName = perceptionTypeName;
 	}
 
-	public String getPerceptionId() {
+	public Integer getPerceptionId() {
 		return perceptionId;
 	}
 
-	public void setPerceptionId(String perceptionId) {
+	public void setPerceptionId(Integer perceptionId) {
 		this.perceptionId = perceptionId;
 	}
 
@@ -83,6 +86,14 @@ public class PerceptionInfo {
 
 	public void setLastCommTime(String lastCommTime) {
 		this.lastCommTime = lastCommTime;
+	}
+
+	public String getPerceptionAddr() {
+		return perceptionAddr;
+	}
+
+	public void setPerceptionAddr(String perceptionAddr) {
+		this.perceptionAddr = perceptionAddr;
 	}
 
 }

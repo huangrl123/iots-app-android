@@ -2,6 +2,7 @@ package com.dahuangit.iots.app.android.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.mapping.MappingException;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.dahuangit.iots.app.android.R;
+import com.dahuangit.iots.app.android.common.IniConfig;
+import com.dahuangit.iots.app.android.dto.UserInfoDto;
 
 /**
  * 登录Activity
@@ -30,7 +33,6 @@ public class LoginActivity extends Activity {
 	private EditText passwordView = null;
 	private Button signInBtn = null;
 	private LinearLayout loginStatusLinearLayout = null;
-	public Mapping mapping = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +64,30 @@ public class LoginActivity extends Activity {
 	 * @throws IOException
 	 */
 	public void attemptLogin() throws IOException, MappingException {
-		mapping = new Mapping();
+		Mapping mapping = new Mapping();
 		InputStream in = getResources().openRawResource(R.raw.castor_mapping);
 		InputSource is = new InputSource(in);
 		mapping.loadMapping(is);
 
+		IniConfig.mapping = mapping;
+
+		Properties config = new Properties();
+		try {
+			config.load(getAssets().open("config.properties"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		IniConfig.propConfig = config;
+
 		Intent slidingActivityIntent = new Intent(this, SlidingActivity.class);
 		startActivity(slidingActivityIntent);
+
+		UserInfoDto user = new UserInfoDto();
+		user.setUserName("test1");
+		user.setPassword("test1");
+
+		IniConfig.currentUser = user;
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.dahuangit.iots.app.android.dto.response;
 
-
 /**
  * 感知端运行日志
  * 
@@ -9,7 +8,7 @@ package com.dahuangit.iots.app.android.dto.response;
  *         创建时间 2014年12月10日 上午10:03:13
  */
 public class PerceptionRuntimeLogInfo {
-	
+
 	private Integer perceptionRuntimeLogId = null;
 
 	private Integer perceptionId = null;

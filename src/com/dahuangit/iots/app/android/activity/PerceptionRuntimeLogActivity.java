@@ -1,10 +1,13 @@
 package com.dahuangit.iots.app.android.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +18,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dahuangit.iots.app.android.R;
+import com.dahuangit.iots.app.android.common.IniConfig;
+import com.dahuangit.iots.app.android.dao.PerceptionDao;
+import com.dahuangit.iots.app.android.dto.response.GetPerceptionRuntimeLogListResponse;
+import com.dahuangit.iots.app.android.dto.response.PerceptionRuntimeLogDto;
+import com.dahuangit.iots.app.android.dto.response.PerceptionRuntimeLogInfo;
+import com.dahuangit.iots.app.android.util.HttpUtils;
+import com.dahuangit.iots.app.android.util.XmlUtils;
 
 /**
  * 感知端运行日志activity
@@ -42,26 +52,67 @@ public class PerceptionRuntimeLogActivity extends Activity {
 		adapter = new GroupListAdapter(this, list, listTag);
 		listView.setAdapter(adapter);
 
-		setData();
+		Intent intent = getIntent();
+		Integer perceptionId = intent.getIntExtra("perceptionId", -1);
+
+		// 先从本地数据库中查询出数据
+		PerceptionDao perceptionDao = new PerceptionDao(this);
+		GetPerceptionRuntimeLogListResponse response = perceptionDao.getPerceptionRuntimeLogList(perceptionId);
+		perceptionDao.close();
+		setData(response, false);
+
+		// 检查服务器上有没有更新的数据
+		new Thread() {
+			public void run() {
+				try {
+					String host = IniConfig.propConfig.getProperty("getPerceptionRuntimeLogList.url");
+					Map<String, String> params = new HashMap<String, String>();
+					String xml = HttpUtils.getHttpRequestContent(host, params);
+
+					GetPerceptionRuntimeLogListResponse r = XmlUtils.xml2obj(IniConfig.mapping, xml,
+							GetPerceptionRuntimeLogListResponse.class);
+					setData(r, true);
+
+					adapter.notifyDataSetChanged();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
 	}
 
-	public void setData() {
-		list.add("2014年12月08日");
-		listTag.add("2014年12月08日");
-		for (int i = 0; i < 3; i++) {
-			list.add("2014年12月08日 " + i +"分50秒  红外感应状态:接近");
-		}
-		
-		list.add("2014年12月07日");
-		listTag.add("2014年12月07日");
-		for (int i = 0; i < 3; i++) {
-			list.add("2014年12月07日 " + i +"分50秒  按键状态:关闭");
-		}
-		
-		list.add("2014年12月05日");
-		listTag.add("2014年12月05日");
-		for (int i = 0; i < 30; i++) {
-			list.add("2014年12月05日 " + i +"分50秒  电机1旋转状态:正转");
+	/**
+	 * 设置数据
+	 * 
+	 * @param response
+	 * @param appendTop
+	 *            是否追加在顶部
+	 */
+	private void setData(GetPerceptionRuntimeLogListResponse response, boolean appendTop) {
+		List<PerceptionRuntimeLogDto> logDtos = response.getLogDtos();
+		for (PerceptionRuntimeLogDto dto : logDtos) {
+			if (appendTop) {
+				list.add(0, dto.getGroupTag());
+				listTag.add(0, dto.getGroupTag());
+			} else {
+				list.add(dto.getGroupTag());
+				listTag.add(dto.getGroupTag());
+			}
+			
+			for (PerceptionRuntimeLogInfo info : dto.getLogInfos()) {
+				StringBuffer sb = new StringBuffer();
+				sb.append(info.getCreateDateTime());
+				sb.append(" ");
+				sb.append(info.getPerceptionParamName());
+				sb.append(":");
+				sb.append(info.getPerceptionParamValueDesc());
+
+				if (appendTop) {
+					list.add(0, sb.toString());
+				} else {
+					list.add(sb.toString());
+				}
+			}
 		}
 	}
 
@@ -85,16 +136,17 @@ public class PerceptionRuntimeLogActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view = convertView;
-			
+
 			if (listTag.contains(getItem(position))) {
 				view = LayoutInflater.from(getContext()).inflate(R.layout.group_list_item_tag, null);
 			} else {
 				view = LayoutInflater.from(getContext()).inflate(R.layout.perception_runtime_log_item, null);
 			}
-			
+
 			TextView textView = (TextView) view.findViewById(R.id.group_list_item_text);
 			textView.setText(getItem(position));
 			return view;
 		}
 	};
+
 }
