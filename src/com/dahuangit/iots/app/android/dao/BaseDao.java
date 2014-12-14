@@ -38,7 +38,7 @@ public class BaseDao extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		InputStream in = context.getResources().openRawResource(R.raw.iots);
 
-		String responseContent = null;
+		StringBuffer responseContent = new StringBuffer();
 		InputStreamReader inputStreamReader = null;
 		BufferedReader read = null;
 
@@ -48,10 +48,14 @@ public class BaseDao extends SQLiteOpenHelper {
 
 			String inputLine = null;
 			while ((inputLine = read.readLine()) != null) {
-				responseContent += inputLine;
+				responseContent.append(inputLine);
+				responseContent.append("\r\n");
 			}
 
-			db.execSQL(responseContent);
+			String[] arr = responseContent.toString().split(";");
+			for (String s : arr) {
+				db.execSQL(s);
+			}
 
 			inputStreamReader.close();
 			read.close();

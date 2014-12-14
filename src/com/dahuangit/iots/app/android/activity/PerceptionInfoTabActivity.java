@@ -81,16 +81,13 @@ public class PerceptionInfoTabActivity extends TabActivity {
 		});
 	}
 
-	// 为TabHost添加标签 新建一个newTabSped(new TabSpec)
-	// 设置其标签和图标（setIndicator）、设置内容(setContent)
-	// TabSpec是TabHost的内部类 TabHost对象的 newTabSpec()方法返回一个TabSpec对象
-	// 源码里边是这么写的 public TabSpec newTabSpec(String tag)
-	// { return new TabSpec(tag); }
 	private void addTab() {
+		perceptionStatusPanelIntent.putExtra("perceptionId", getIntent().getStringExtra("perceptionId"));
 		tabHost.addTab(tabHost.newTabSpec("当前状态")
-				.setIndicator("当前状态", getResources().getDrawable(R.drawable.ic_launcher))// setIndicator()此方法用来设置标签和图表
+				.setIndicator("当前状态", getResources().getDrawable(R.drawable.ic_launcher))
 				.setContent(perceptionStatusPanelIntent));
 
+		perceptionRuntimeLogPanelIntent.putExtra("perceptionId", getIntent().getStringExtra("perceptionId"));
 		tabHost.addTab(tabHost.newTabSpec("运行日志")
 				.setIndicator("运行日志", getResources().getDrawable(R.drawable.ic_launcher))
 				.setContent(perceptionRuntimeLogPanelIntent));
@@ -102,7 +99,5 @@ public class PerceptionInfoTabActivity extends TabActivity {
 		}
 
 	}
-
-	
 
 }

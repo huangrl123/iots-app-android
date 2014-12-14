@@ -2,6 +2,7 @@ package com.dahuangit.iots.app.android.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 import org.exolab.castor.mapping.Mapping;
@@ -19,6 +20,12 @@ import android.widget.LinearLayout;
 import com.dahuangit.iots.app.android.R;
 import com.dahuangit.iots.app.android.common.IniConfig;
 import com.dahuangit.iots.app.android.dto.UserInfoDto;
+import com.dahuangit.iots.app.android.dto.request.UserLoginRequest;
+import com.dahuangit.iots.app.android.dto.response.UserLoginResponse;
+import com.dahuangit.iots.app.android.util.BeanUtils;
+import com.dahuangit.iots.app.android.util.HttpUtils;
+import com.dahuangit.iots.app.android.util.NetworkOnMainThreadExceptionKit;
+import com.dahuangit.iots.app.android.util.XmlUtils;
 
 /**
  * 登录Activity
@@ -37,6 +44,8 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		NetworkOnMainThreadExceptionKit.kit();
 
 		setContentView(R.layout.activity_login);
 
@@ -80,14 +89,32 @@ public class LoginActivity extends Activity {
 
 		IniConfig.propConfig = config;
 
-		Intent slidingActivityIntent = new Intent(this, SlidingActivity.class);
-		startActivity(slidingActivityIntent);
-
 		UserInfoDto user = new UserInfoDto();
-		user.setUserName("test1");
-		user.setPassword("test1");
+		user.setUserName(accountView.getText().toString().trim());
+		user.setPassword(passwordView.getText().toString().trim());
 
 		IniConfig.currentUser = user;
-	}
 
+		Intent slidingActivityIntent = new Intent(this, SlidingActivity.class);
+
+		try {
+			StringBuffer host = new StringBuffer();
+			host.append(IniConfig.propConfig.getProperty("server.host"));
+			host.append(IniConfig.propConfig.getProperty("userLogin.url"));
+			UserLoginRequest request = new UserLoginRequest(this);
+			request.setUserName(user.getUserName());
+			request.setPassword(user.getPassword());
+
+			Map<String, String> params = BeanUtils.bean2Map(request);
+			String xml = HttpUtils.getHttpRequestContent(host.toString(), params);
+
+			UserLoginResponse response = XmlUtils.xml2obj(mapping, xml, UserLoginResponse.class);
+			IniConfig.currentUser.setUserId(response.getUserId());
+			slidingActivityIntent.putExtra("userLoginResponse", response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		startActivity(slidingActivityIntent);
+	}
 }

@@ -1,5 +1,7 @@
 package com.dahuangit.iots.app.android.dto;
 
-public class Dto {
+import java.io.Serializable;
+
+public class Dto implements Serializable {
 
 }

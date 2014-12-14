@@ -56,7 +56,8 @@ public class PerceptionDao extends BaseDao {
 	 * @param perceptionRuntimeLogInfo
 	 */
 	public void addPerceptionRuntimeLog(PerceptionRuntimeLogInfo perceptionRuntimeLogInfo) {
-		String table = "t_perceptionruntimelog";
+		
+		String table = "t_perception_runtime_log";
 		ContentValues values = new ContentValues();
 		values.put("perception_runtime_log_id", perceptionRuntimeLogInfo.getPerceptionRuntimeLogId());
 		values.put("perception_id", perceptionRuntimeLogInfo.getPerceptionId());
@@ -82,7 +83,7 @@ public class PerceptionDao extends BaseDao {
 	 */
 	public GetPerceptionListResponse getPerceptionList(Integer userId) {
 		GetPerceptionListResponse response = new GetPerceptionListResponse();
-		String sql = "select * from t_perception t order by t.last_comm_time desc";
+		String sql = "select * from t_perception t order by t.perception_id desc";
 		Cursor c = this.query(sql);
 
 		List<PerceptionInfo> perceptionDtos = new ArrayList<PerceptionInfo>();
@@ -117,6 +118,8 @@ public class PerceptionDao extends BaseDao {
 		}
 
 		response.setPerceptionDtos(perceptionDtos);
+		
+		c.close();
 		return response;
 	}
 
@@ -202,7 +205,9 @@ public class PerceptionDao extends BaseDao {
 		}
 
 		response.setLogDtos(logDtos);
-
+       
+		c.close();
+		
 		return response;
 	}
 }

@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.dahuangit.iots.app.android.dto.response.GetPerceptionRuntimeLogListRe
 import com.dahuangit.iots.app.android.dto.response.PerceptionRuntimeLogDto;
 import com.dahuangit.iots.app.android.dto.response.PerceptionRuntimeLogInfo;
 import com.dahuangit.iots.app.android.util.HttpUtils;
+import com.dahuangit.iots.app.android.util.NetworkOnMainThreadExceptionKit;
 import com.dahuangit.iots.app.android.util.XmlUtils;
 
 /**
@@ -42,9 +45,31 @@ public class PerceptionRuntimeLogActivity extends Activity {
 
 	private List<String> list = new ArrayList<String>();
 
+	final PerceptionDao perceptionDao = new PerceptionDao(this);
+
+	private Handler handler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			int what = msg.what;
+			switch (what) {
+			case 1:
+				GetPerceptionRuntimeLogListResponse r = (GetPerceptionRuntimeLogListResponse) msg.getData().get(
+						"response");
+				setData(r, true);
+				adapter.notifyDataSetChanged();
+				break;
+			}
+		}
+
+	};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		NetworkOnMainThreadExceptionKit.kit();
+
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		setContentView(R.layout.perception_runtime_log_list);
 		listView = (ListView) findViewById(R.id.perceptionRuntimeLogList);
@@ -53,27 +78,47 @@ public class PerceptionRuntimeLogActivity extends Activity {
 		listView.setAdapter(adapter);
 
 		Intent intent = getIntent();
-		Integer perceptionId = intent.getIntExtra("perceptionId", -1);
+		String perceptionId = intent.getStringExtra("perceptionId");
 
 		// 先从本地数据库中查询出数据
-		PerceptionDao perceptionDao = new PerceptionDao(this);
-		GetPerceptionRuntimeLogListResponse response = perceptionDao.getPerceptionRuntimeLogList(perceptionId);
-		perceptionDao.close();
+		final GetPerceptionRuntimeLogListResponse response = perceptionDao.getPerceptionRuntimeLogList(Integer
+				.valueOf(perceptionId));
 		setData(response, false);
 
 		// 检查服务器上有没有更新的数据
 		new Thread() {
 			public void run() {
 				try {
-					String host = IniConfig.propConfig.getProperty("getPerceptionRuntimeLogList.url");
+					StringBuffer host = new StringBuffer();
+					host.append(IniConfig.propConfig.getProperty("server.host"));
+					host.append(IniConfig.propConfig.getProperty("getPerceptionRuntimeLogList.url"));
 					Map<String, String> params = new HashMap<String, String>();
-					String xml = HttpUtils.getHttpRequestContent(host, params);
+					params.put("perceptionId", getIntent().getStringExtra("perceptionId"));
+
+					Integer localMaxPerceptionRuntimeLogId = 0;
+					if (response.getLogDtos().size() > 0 && response.getLogDtos().get(0).getLogInfos().size() > 0) {
+						localMaxPerceptionRuntimeLogId = response.getLogDtos().get(0).getLogInfos().get(0)
+								.getPerceptionRuntimeLogId();
+					}
+					params.put("localMaxPerceptionRuntimeLogId", localMaxPerceptionRuntimeLogId.toString());
+
+					String xml = HttpUtils.getHttpRequestContent(host.toString(), params);
 
 					GetPerceptionRuntimeLogListResponse r = XmlUtils.xml2obj(IniConfig.mapping, xml,
 							GetPerceptionRuntimeLogListResponse.class);
-					setData(r, true);
 
-					adapter.notifyDataSetChanged();
+					for (PerceptionRuntimeLogDto dto : r.getLogDtos()) {
+						for (PerceptionRuntimeLogInfo info : dto.getLogInfos()) {
+							perceptionDao.addPerceptionRuntimeLog(info);
+						}
+					}
+
+					Message msg = new Message();
+					msg.what = 1;
+					Bundle data = new Bundle();
+					data.putSerializable("response", r);
+					msg.setData(data);
+					handler.sendMessage(msg);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -91,14 +136,16 @@ public class PerceptionRuntimeLogActivity extends Activity {
 	private void setData(GetPerceptionRuntimeLogListResponse response, boolean appendTop) {
 		List<PerceptionRuntimeLogDto> logDtos = response.getLogDtos();
 		for (PerceptionRuntimeLogDto dto : logDtos) {
-			if (appendTop) {
-				list.add(0, dto.getGroupTag());
-				listTag.add(0, dto.getGroupTag());
-			} else {
+//			if (appendTop) {
+//				if (list.size() > 0) {
+//					list.add(list.size() - 1, dto.getGroupTag());
+//					listTag.add(listTag.size() - 1, dto.getGroupTag());
+//				}
+//			} else {
 				list.add(dto.getGroupTag());
 				listTag.add(dto.getGroupTag());
-			}
-			
+//			}
+
 			for (PerceptionRuntimeLogInfo info : dto.getLogInfos()) {
 				StringBuffer sb = new StringBuffer();
 				sb.append(info.getCreateDateTime());
@@ -106,12 +153,12 @@ public class PerceptionRuntimeLogActivity extends Activity {
 				sb.append(info.getPerceptionParamName());
 				sb.append(":");
 				sb.append(info.getPerceptionParamValueDesc());
-
-				if (appendTop) {
-					list.add(0, sb.toString());
-				} else {
+//
+//				if (appendTop) {
+//					list.add(0, sb.toString());
+//				} else {
 					list.add(sb.toString());
-				}
+//				}
 			}
 		}
 	}

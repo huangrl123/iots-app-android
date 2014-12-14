@@ -25,6 +25,7 @@
             </TextView>
 
             <Switch
+                android:id="@+id/machine1RotateStatusSwitch2j2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
@@ -40,7 +41,7 @@
         <View
             android:layout_height="1dip"
             android:background="#000000" />
-        
+
         <TableRow>
 
             <TextView
@@ -56,6 +57,7 @@
             </TextView>
 
             <Switch
+                android:id="@+id/machine1SwitchStatusSwitch2j2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
@@ -87,6 +89,7 @@
             </TextView>
 
             <Switch
+                android:id="@+id/machine2RotateStatusSwitch2j2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
@@ -103,7 +106,7 @@
             android:layout_height="1dip"
             android:background="#000000" />
 
-          <TableRow>
+        <TableRow>
 
             <TextView
                 android:layout_width="0dp"
@@ -118,6 +121,7 @@
             </TextView>
 
             <Switch
+                android:id="@+id/machine2SwitchStatusSwitch2j2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
@@ -133,7 +137,7 @@
         <View
             android:layout_height="1dip"
             android:background="#000000" />
-        
+
         <TableRow>
 
             <TextView
@@ -149,6 +153,7 @@
             </TextView>
 
             <Switch
+                android:id="@+id/i2cStatusSwitch2j2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
@@ -180,6 +185,7 @@
             </TextView>
 
             <TextView
+                android:id="@+id/infraredStatusTextView2j2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
@@ -195,6 +201,7 @@
         <View
             android:layout_height="1dip"
             android:background="#000000" />
+
         <TableRow>
 
             <TextView
@@ -210,6 +217,7 @@
             </TextView>
 
             <TextView
+                android:id="@+id/pressKeyStatusTextView2j2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"

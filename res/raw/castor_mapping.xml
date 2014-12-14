@@ -62,4 +62,16 @@
         </field>
     </class>
 
+    <!-- 登录 -->
+    <class
+        name="com.dahuangit.iots.app.android.dto.response.UserLoginResponse"
+        auto-complete="true" >
+        <map-to xml="response" />
+
+        <fild
+            name="success"
+            type="boolean" />
+        <fild name="msg" />
+    </class>
+
 </mapping>

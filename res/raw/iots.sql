@@ -1,4 +1,3 @@
---感知端信息表
 create table t_perception(
 	perception_type_id integer not null,
 	perception_type_name text not null,
@@ -10,7 +9,6 @@ create table t_perception(
 	last_comm_time text not null
 );
 
---感知端运行日志表
 create table t_perception_runtime_log(
 	perception_runtime_log_id integer not null,
 	perception_id integer not null,
