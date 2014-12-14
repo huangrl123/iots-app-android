@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -13,6 +15,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Switch;
@@ -52,10 +56,14 @@ public class PerceptionCurrentStatusActivity extends Activity {
 	/** 按键状态 */
 	private TextView pressKeyStatusTextView2j2 = null;
 
+	private Button queryBtn2j2 = null;
+
 	/** 实时视频view */
 	private VideoView videoView6j6 = null;
 
 	private ProgressDialog progressDialog = null;
+
+	private Context context = null;
 
 	/** 已经加载过 */
 	private boolean loaded = false;
@@ -70,10 +78,16 @@ public class PerceptionCurrentStatusActivity extends Activity {
 			case 1:// 查询成功之后要做的事
 				RemoteQuery2j2PerceptionResponse response = (RemoteQuery2j2PerceptionResponse) msg.getData().get(
 						"response");
+
 				// 如果放回不成功
 				if (!response.getSuccess()) {
+					Builder dialog = DialogUtils.createAlertDialog(context, response.getMsg());
+
+					progressDialog.hide();
+					dialog.show();
 					return;
 				}
+
 				machine1RotateStatusSwitch2j2.setChecked(parseBoolean(response.getMachine1RotateStatus()));
 				machine2RotateStatusSwitch2j2.setChecked(parseBoolean(response.getMachine2RotateStatus()));
 				machine1SwitchStatusSwitch2j2.setChecked(parseBoolean(response.getMachine1SwitchStatus()));
@@ -105,6 +119,8 @@ public class PerceptionCurrentStatusActivity extends Activity {
 		NetworkOnMainThreadExceptionKit.kit();
 
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
+
+		context = this;
 
 		progressDialog = DialogUtils.createProgressDialog(this);
 
@@ -139,6 +155,15 @@ public class PerceptionCurrentStatusActivity extends Activity {
 
 	private void set2j2viewItem() {
 		View contentView = ViewUtils.getRootView(this);
+
+		queryBtn2j2 = (Button) contentView.findViewById(R.id.queryBtn2j2);
+		queryBtn2j2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				setValue2j2();
+			}
+		});
 
 		// 初始化控件
 		// 电机1旋转状态

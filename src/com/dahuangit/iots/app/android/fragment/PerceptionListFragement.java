@@ -5,19 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.content.ContentValues;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -25,37 +27,76 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.dahuangit.iots.app.android.R;
+import com.dahuangit.iots.app.android.activity.LoginActivity;
 import com.dahuangit.iots.app.android.activity.PerceptionInfoTabActivity;
 import com.dahuangit.iots.app.android.common.IniConfig;
-import com.dahuangit.iots.app.android.dao.PerceptionDao;
 import com.dahuangit.iots.app.android.dto.response.GetPerceptionListResponse;
 import com.dahuangit.iots.app.android.dto.response.PerceptionInfo;
 import com.dahuangit.iots.app.android.util.HttpUtils;
-import com.dahuangit.iots.app.android.util.NetworkOnMainThreadExceptionKit;
 import com.dahuangit.iots.app.android.util.XmlUtils;
 
 public class PerceptionListFragement extends Fragment {
 	private ListView machineListView = null;
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.page1, null);
-		machineListView = (ListView) view.findViewById(R.id.ListView01);
+	private List<Map<String, Object>> itemList = null;
 
-		NetworkOnMainThreadExceptionKit.kit();
+	private SimpleAdapter listItemAdapter = null;
 
-		// 先从数据库查询
-		final PerceptionDao perceptionDao = new PerceptionDao(getActivity());
-		final GetPerceptionListResponse response = perceptionDao.getPerceptionList(IniConfig.currentUser.getUserId());
+	private final OnKeyListener backKeyListener = new OnKeyListener() {
+		@Override
+		public boolean onKey(final View v, int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+				new AlertDialog.Builder(v.getContext()).setTitle("提示").setMessage("确定退出?")
+						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								System.exit(0);
+							}
+						}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								// 取消按钮事件
+							}
+						}).show();
 
-		final List<Map<String, Object>> itemList = new ArrayList<Map<String, Object>>();
-		for (PerceptionInfo info : response.getPerceptionDtos()) {
-			itemList.add(perceptionInfoToItemViewMap(info));
+				return true;
+			}
+
+			return false;
+		}
+	};
+
+	private final Handler handler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			int what = msg.what;
+			switch (what) {
+			case 1:
+				GetPerceptionListResponse response = (GetPerceptionListResponse) msg.getData().get("response");
+				for (PerceptionInfo info : response.getPerceptionDtos()) {
+					itemList.add(perceptionInfoToItemViewMap(info));
+				}
+
+				listItemAdapter.notifyDataSetChanged();
+				break;
+			}
 		}
 
-		final SimpleAdapter listItemAdapter = new SimpleAdapter(getActivity(), itemList, R.layout.listview_item,
-				new String[] { "ItemImage", "ItemTitle", "ItemText", "ItemSign", "perceptionId", "ItemInImage" },
-				new int[] { R.id.ItemImage, R.id.ItemTitle, R.id.ItemText, R.id.ItemSign, R.id.perceptionId,
-						R.id.ItemInImage });
+	};
+
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.page1, null);
+
+		machineListView = (ListView) view.findViewById(R.id.ListView01);
+
+		machineListView.setOnKeyListener(backKeyListener);
+
+		// NetworkOnMainThreadExceptionKit.kit();
+
+		itemList = new ArrayList<Map<String, Object>>();
+
+		listItemAdapter = new SimpleAdapter(getActivity(), itemList, R.layout.listview_item, new String[] {
+				"ItemImage", "ItemTitle", "ItemText", "ItemSign", "perceptionId", "ItemInImage" }, new int[] {
+				R.id.ItemImage, R.id.ItemTitle, R.id.ItemText, R.id.ItemSign, R.id.perceptionId, R.id.ItemInImage });
 
 		machineListView.setAdapter(listItemAdapter);
 
@@ -82,24 +123,6 @@ public class PerceptionListFragement extends Fragment {
 			}
 		});
 
-		// 主线程中的handler--用户通知界面更新
-		final Handler handler = new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				int what = msg.what;
-
-				switch (what) {
-				case 1: {
-					listItemAdapter.notifyDataSetChanged();
-					break;
-				}
-
-				}
-			}
-
-		};
-
 		// 检查服务器数据有无更新
 		new Thread() {
 			public void run() {
@@ -109,12 +132,8 @@ public class PerceptionListFragement extends Fragment {
 					host.append(IniConfig.propConfig.getProperty("getPerceptionList.url"));
 					Map<String, String> params = new HashMap<String, String>();
 
-					Integer localMaxPerceptionId = null;
-					if (response != null && response.getPerceptionDtos().size() > 0) {
-						localMaxPerceptionId = response.getPerceptionDtos().get(0).getPerceptionId();
-					} else {
-						localMaxPerceptionId = 0;
-					}
+					Integer localMaxPerceptionId = 0;
+
 					params.put("userId", IniConfig.currentUser.getUserId().toString());
 					params.put("localMaxPerceptionId", localMaxPerceptionId.toString());
 
@@ -123,25 +142,12 @@ public class PerceptionListFragement extends Fragment {
 					GetPerceptionListResponse response = XmlUtils.xml2obj(IniConfig.mapping, xmlStr,
 							GetPerceptionListResponse.class);
 
-					List<PerceptionInfo> perceptionDtos = response.getPerceptionDtos();
-
-					for (PerceptionInfo info : perceptionDtos) {
-						itemList.add(0, perceptionInfoToItemViewMap(info));
-						ContentValues values = new ContentValues();
-						values.put("perception_type_id", info.getPerceptionTypeId());
-						values.put("perception_type_name", info.getPerceptionTypeName());
-						values.put("perception_id", info.getPerceptionId());
-						values.put("perception_name", info.getPerceptionName());
-						values.put("perception_addr", info.getPerceptionAddr());
-						values.put("install_site", info.getInstallSite());
-						values.put("is_on_line", info.getIsOnline());
-						values.put("last_comm_time", info.getLastCommTime());
-						perceptionDao.insert("t_perception", values);
-					}
-
-					perceptionDao.close();
-
-					handler.sendEmptyMessage(1);
+					Message msg = new Message();
+					msg.what = 1;
+					Bundle data = new Bundle();
+					data.putSerializable("response", response);
+					msg.setData(data);
+					handler.sendMessage(msg);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -169,4 +175,5 @@ public class PerceptionListFragement extends Fragment {
 
 		return map;
 	}
+
 }

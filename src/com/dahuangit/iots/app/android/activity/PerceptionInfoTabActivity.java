@@ -38,37 +38,21 @@ public class PerceptionInfoTabActivity extends TabActivity {
 
 		imageView = (ImageView) findViewById(R.id.backImg);
 
-		perceptionStatusPanelIntent = new Intent(this, PerceptionCurrentStatusActivity.class);
-		perceptionRuntimeLogPanelIntent = new Intent(this, PerceptionRuntimeLogActivity.class);
-		perceptionRuntimeVediaFilePanelInent = new Intent(this, PerceptionRuntimeVediaFileActivity.class);
+		perceptionStatusPanelIntent = new Intent(this, PerceptionCurrentStatusActivity.class)
+				.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		perceptionRuntimeLogPanelIntent = new Intent(this, PerceptionRuntimeLogActivity.class)
+				.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		perceptionRuntimeVediaFilePanelInent = new Intent(this, PerceptionRuntimeVediaFileActivity.class)
+				.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-		addTab();// 添加标签
-		// 设置TabHost背景颜色
-		// tabHost.setBackgroundColor(Color.argb(150, 20, 80, 150));
-		// 设置TabHost背景图片资源
-		// tabHost.setBackgroundResource(R.drawable.ic_launcher);
-		// 设置当前显示哪一个标签 我的理解就是当你第一次启动程序默认显示那个标签 这里是指定的选项卡的ID从0开始
+		addTab();
+
 		tabHost.setCurrentTab(0);
-		// 标签切换事件处理，setOnTabChangedListener
-		// 注意是标签切换事件不是点击事件，而是从一个标签切换到另外一个标签会触发的事件
+
 		tabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabId) {
-				// AlertDialog.Builder builder = new
-				// AlertDialog.Builder(PerceptionInfoTabActivity.this);
-				// Dialog dia;
-				// builder.setTitle("提示");
-				// builder.setMessage("当前选中了" + tabId + "标签");
 
-				// builder.setNegativeButton("确定", new OnClickListener() {
-				//
-				// public void onClick(DialogInterface dialog, int which) {
-				// dialog.cancel();
-				// }
-				// });
-
-				// dia = builder.create();
-				// dia.show();
 			}
 		});
 
@@ -83,17 +67,17 @@ public class PerceptionInfoTabActivity extends TabActivity {
 
 	private void addTab() {
 		perceptionStatusPanelIntent.putExtra("perceptionId", getIntent().getStringExtra("perceptionId"));
-		tabHost.addTab(tabHost.newTabSpec("当前状态")
+		tabHost.addTab(tabHost.newTabSpec("perceptionStatusPanelIntent")
 				.setIndicator("当前状态", getResources().getDrawable(R.drawable.ic_launcher))
 				.setContent(perceptionStatusPanelIntent));
 
 		perceptionRuntimeLogPanelIntent.putExtra("perceptionId", getIntent().getStringExtra("perceptionId"));
-		tabHost.addTab(tabHost.newTabSpec("运行日志")
+		tabHost.addTab(tabHost.newTabSpec("perceptionRuntimeLogPanelIntent")
 				.setIndicator("运行日志", getResources().getDrawable(R.drawable.ic_launcher))
 				.setContent(perceptionRuntimeLogPanelIntent));
 
 		if (PerceptionCurrentStatusActivity.perceptionType == 2) {
-			tabHost.addTab(tabHost.newTabSpec("运行视频")
+			tabHost.addTab(tabHost.newTabSpec("perceptionRuntimeVediaFilePanelInent")
 					.setIndicator("运行视频", getResources().getDrawable(R.drawable.ic_launcher))
 					.setContent(perceptionRuntimeVediaFilePanelInent));
 		}

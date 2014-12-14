@@ -10,9 +10,13 @@ import org.exolab.castor.mapping.MappingException;
 import org.xml.sax.InputSource;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,6 +29,7 @@ import com.dahuangit.iots.app.android.dto.response.UserLoginResponse;
 import com.dahuangit.iots.app.android.util.BeanUtils;
 import com.dahuangit.iots.app.android.util.HttpUtils;
 import com.dahuangit.iots.app.android.util.NetworkOnMainThreadExceptionKit;
+import com.dahuangit.iots.app.android.util.ViewUtils;
 import com.dahuangit.iots.app.android.util.XmlUtils;
 
 /**
@@ -116,5 +121,15 @@ public class LoginActivity extends Activity {
 		}
 
 		startActivity(slidingActivityIntent);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+           this.finish();
+		}
+
+		return false;
+
 	}
 }

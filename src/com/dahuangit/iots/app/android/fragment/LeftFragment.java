@@ -43,8 +43,7 @@ public class LeftFragment extends Fragment {
 				new AlertDialog.Builder(v.getContext()).setTitle("提示").setMessage("确定退出?")
 						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								Intent loginActivityIntent = new Intent(v.getContext(), LoginActivity.class);
-								startActivity(loginActivityIntent);
+								System.exit(0);
 							}
 						}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {

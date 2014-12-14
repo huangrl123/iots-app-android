@@ -45,7 +45,7 @@ public final class R {
         public static final int LinearLayout01=0x7f0b001a;
         public static final int ListView01=0x7f0b001b;
         public static final int RelativeLayout01=0x7f0b0010;
-        public static final int action_forgot_password=0x7f0b002f;
+        public static final int action_forgot_password=0x7f0b0030;
         public static final int backImg=0x7f0b0022;
         public static final int center_frame=0x7f0b0007;
         public static final int email=0x7f0b0003;
@@ -53,7 +53,7 @@ public final class R {
         public static final int gridview_imageview=0x7f0b0017;
         public static final int gridview_textview=0x7f0b0018;
         public static final int group_list_item_text=0x7f0b0008;
-        public static final int head_layout=0x7f0b002c;
+        public static final int head_layout=0x7f0b002d;
         public static final int head_view=0x7f0b000a;
         public static final int i2cStatusSwitch2j2=0x7f0b0028;
         public static final int infraredStatusTextView2j2=0x7f0b0029;
@@ -72,19 +72,20 @@ public final class R {
         public static final int my_answer_textview=0x7f0b000d;
         public static final int my_question_textview=0x7f0b000c;
         public static final int name_textview=0x7f0b000b;
-        public static final int pager=0x7f0b002e;
+        public static final int pager=0x7f0b002f;
         public static final int password=0x7f0b0004;
         public static final int perceptionId=0x7f0b0015;
         public static final int perceptionRuntimeLogList=0x7f0b001d;
         public static final int pressKeyStatusTextView2j2=0x7f0b002a;
+        public static final int queryBtn2j2=0x7f0b002b;
         public static final int right_frame=0x7f0b0021;
-        public static final int showLeft=0x7f0b002d;
+        public static final int showLeft=0x7f0b002e;
         public static final int sign_in_button=0x7f0b0006;
         public static final int slidingMenu=0x7f0b0019;
         public static final int table1=0x7f0b0023;
         public static final int textView1=0x7f0b001c;
         public static final int title=0x7f0b001e;
-        public static final int video=0x7f0b002b;
+        public static final int video=0x7f0b002c;
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;

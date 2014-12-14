@@ -11,8 +11,7 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone"
-        >
+        android:visibility="gone" >
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
@@ -31,6 +30,7 @@
     </LinearLayout>
 
     <!-- Login form -->
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -38,6 +38,8 @@
 
         <LinearLayout
             style="@style/LoginFormContainer"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical" >
 
             <EditText
@@ -47,8 +49,8 @@
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:text="test1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:text="test1" />
 
             <EditText
                 android:id="@+id/password"
@@ -60,8 +62,8 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:text="test1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:text="test1" />
 
             <Button
                 android:id="@+id/sign_in_button"
